@@ -130,6 +130,12 @@ bool NTPClient::isTimeSet() const {
   return (this->_lastUpdate != 0); // returns true if the time has been set, else false
 }
 
+unsigned long long NTPClient::getEpochTimeMillis() const {
+    return static_cast<unsigned long long>(this->_timeOffset) * 1000 +  // User offset in milliseconds
+           static_cast<unsigned long long>(this->_currentEpoc) * 1000 +  // Epoc returned by the NTP server in milliseconds
+           (millis() - this->_lastUpdate);  // Time since last update in milliseconds
+}
+
 unsigned long NTPClient::getEpochTime() const {
   return this->_timeOffset + // User offset
          this->_currentEpoc + // Epoch returned by the NTP server
